@@ -12,7 +12,8 @@
 }
 
 .svg-map__location:hover {
-  fill: #d1d4d9;
+  fill: #800080;
+  opacity: 0.8;
 }
 
 .svg-map__location[aria-checked="true"] {
@@ -20,11 +21,44 @@
 }
 
 .map__tooltip {
-  border-radius: 5px;
+  border-radius: 15px;
   color: white;
   position: fixed;
   /* width: 200px; */
-  padding: 15px;
+  padding: 10px;
   border: 1px solid darkgray;
   background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* colors depending on VEP Ballot counted */
+.svg-map__location--heat40 {
+  fill: #09f9f4;
+}
+
+.svg-map__location--heat45 {
+  fill: #13e4ea;
+}
+
+.svg-map__location--heat50 {
+  fill: #1dd0e1;
+}
+
+.svg-map__location--heat55 {
+  fill: #27bbd7;
+}
+
+.svg-map__location--heat60 {
+  fill: #31a6cd;
+}
+
+.svg-map__location--heat65 {
+  fill: #3b91c4;
+}
+
+.svg-map__location--heat70 {
+  fill: #457dba;
+}
+
+.svg-map__location--heat75 {
+  fill: #4e68b0;
 }
