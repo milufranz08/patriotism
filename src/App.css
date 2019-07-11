@@ -8,13 +8,21 @@
 }
 
 .svg-map__location {
-  fill: red;
+  fill: #b7f7f6;
 }
 
 .svg-map__location:hover {
-  fill: #4b0082;
+  fill: #d1d4d9;
 }
 
 .svg-map__location[aria-checked="true"] {
-  fill: #8b008b;
+  fill: #ec2f49;
+}
+
+.map__tooltip {
+  position: fixed;
+  width: 200px;
+  padding: 10px;
+  border: 1px solid darkgray;
+  background-color: white;
 }
