@@ -1,10 +1,18 @@
 .App {
+  background-color: #1f1f1f;
+  display: grid;
+  grid-template-columns: 80% 20%;
   text-align: center;
-  margin: 3em;
+  height: 100vh;
+}
+
+.map {
+  padding: 5em;
 }
 
 .svg-map {
-  stroke: white;
+  stroke: #1f1f1f;
+  stroke-width: 2;
 }
 
 .svg-map__location {
@@ -61,4 +69,66 @@
 
 .svg-map__location--heat75 {
   fill: #4e68b0;
+}
+
+.svg-map__location--heat75 {
+  fill: #4e68b0;
+}
+
+.svg-map__location--heatdown {
+  fill: #d0d5d5 !important;
+}
+
+/* Legend Styling */
+
+.legend {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  justify-self: end;
+  /* width: 30px; */
+}
+
+.legend-num {
+  color: white;
+  padding-right: 1em;
+  align-self: center;
+}
+
+.legend-rec {
+  cursor: pointer;
+  height: 100%;
+  width: 30px;
+  justify-self: end;
+}
+
+.c40 {
+  background-color: #09f9f4;
+}
+
+.c45 {
+  background-color: #13e4ea;
+}
+
+.c50 {
+  background-color: #1dd0e1;
+}
+
+.c55 {
+  background-color: #27bbd7;
+}
+
+.c60 {
+  background-color: #31a6cd;
+}
+
+.c65 {
+  background-color: #3b91c4;
+}
+
+.c70 {
+  background-color: #457dba;
+}
+
+.c75 {
+  background-color: #4e68b0;
 }

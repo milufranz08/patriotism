@@ -3,11 +3,21 @@ import Usa from "@svg-maps/usa";
 import { CheckboxSVGMap } from "react-svg-map";
 import "react-svg-map/lib/index.css";
 import "./App.css";
+//Components
+import Legend from "./components/Legend";
 
 function App() {
   const [turnOutData, setTurnOutData] = useState([]);
   const [tooltipInfo, setTooltipInfo] = useState([]);
+  const [groupSelected, setGroupSelected] = useState(0);
   const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
+
+  useEffect(
+    () => {
+      console.log({ groupSelected });
+    },
+    [groupSelected]
+  );
 
   useEffect(() => {
     const getSheetValues = async () => {
@@ -17,7 +27,7 @@ function App() {
           headers: {
             "Content-Type": "application/json",
             Authorization:
-              "Bearer ya29.GltCB2GNtonbVtOUszmZrer8j9TpyvnV5QMGB7tKs-j8Ts_4DzkRpsLQ9uF5fcAPSk1WjG0aI5ds4rPAE4YcCW_DWhp6KDKEAl9n6U-lRd9oE_f6hAQDzIRxuOtI"
+              "Bearer ya29.GltDB6YdX5eWXlSoDGIK8FIbbLz17Fv4SCWOAOsUmztZzJe9ZE2zagyqz6yXmrvy5yLFiJmqDjUDVrsQKx1Yl8Ve5iTIa4qC-5de9GkInAYcf1D_Mi9z2Hz8LR6X"
           }
         }
       );
@@ -66,59 +76,66 @@ function App() {
 
   const getLocationClassName = (location, index) => {
     let idx;
-
+    let pct;
     if (
       turnOutData &&
       turnOutData[index] &&
       turnOutData[index][0].toLowerCase() === location.name.toLowerCase()
     ) {
       idx = index;
-    } else {
+    } else if (turnOutData) {
       idx = turnOutData.findIndex(data => {
         return data[0].toLowerCase() === location.name.toLowerCase();
       });
     }
 
-    // if (location.name === "West Virginia") {
-    //   console.log("idx", idx);
-    //   console.log("turnOutData[idx]", turnOutData[idx]);
-    // }
-
     if ((idx || idx === 0) && turnOutData[idx]) {
       let num =
         turnOutData[idx][3] === "" ? turnOutData[idx][4] : turnOutData[idx][3];
-      let percentage = round5(parseInt(num.replace(/%/g, ""), 10));
-      if (location.name === "West Virginia") {
-        console.log(percentage);
-      }
-      // console.log("name: " + turnOutData[idx][0] + " number: " + percentage);
-      return `svg-map__location svg-map__location--heat${percentage}`;
+      pct = round5(parseInt(num.replace(/%/g, ""), 10));
     }
+    if (!groupSelected) {
+      return `svg-map__location svg-map__location--heat${pct}`;
+    } else {
+      let highlight = pct === groupSelected ? pct : "down";
+      return `svg-map__location svg-map__location--heat${highlight}`;
+    }
+  };
+
+  const getAllInGroup = percentage => {
+    // console.log({ percentage });
+    setGroupSelected(percentage);
   };
 
   return (
     <div className="App">
-      <CheckboxSVGMap
-        map={Usa}
-        locationClassName={(location, index) =>
-          getLocationClassName(location, index)
-        }
-        onLocationMouseOver={e => mouseOver(e)}
-        onLocationMouseOut={() => mouseOut()}
-      />
-      {tooltipInfo && (
-        <div className="map__tooltip" style={coordinates.x !== 0 ? show : hide}>
-          <h3>{tooltipInfo[0]}</h3>
-          <p>
-            <strong>VEP turnout: </strong>
-            {tooltipInfo[3] === "" ? tooltipInfo[4] : tooltipInfo[3]}
-          </p>
-          <p>
-            <strong>VEP: </strong>
-            {tooltipInfo[8]}
-          </p>
-        </div>
-      )}
+      <div className="map">
+        <CheckboxSVGMap
+          map={Usa}
+          locationClassName={(location, index) =>
+            getLocationClassName(location, index)
+          }
+          onLocationMouseOver={e => mouseOver(e)}
+          onLocationMouseOut={() => mouseOut()}
+        />
+        {tooltipInfo && (
+          <div
+            className="map__tooltip"
+            style={coordinates.x !== 0 ? show : hide}
+          >
+            <h3>{tooltipInfo[0]}</h3>
+            <p>
+              <strong>VEP turnout: </strong>
+              {tooltipInfo[3] === "" ? tooltipInfo[4] : tooltipInfo[3]}
+            </p>
+            <p>
+              <strong>VEP: </strong>
+              {tooltipInfo[8]}
+            </p>
+          </div>
+        )}
+      </div>
+      <Legend getAllInGroup={p => getAllInGroup(p)} />
     </div>
   );
 }
