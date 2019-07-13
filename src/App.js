@@ -1,43 +1,48 @@
 import React, { useState, useEffect } from "react";
 import Usa from "@svg-maps/usa";
 import { CheckboxSVGMap } from "react-svg-map";
+import { RadioGroup, RadioButton } from "react-radio-buttons";
+//Style
 import "react-svg-map/lib/index.css";
 import "./App.css";
 //Components
 import Legend from "./components/Legend";
+//Api
+import { getData } from "./api/data";
 
 function App() {
   const [turnOutData, setTurnOutData] = useState([]);
   const [tooltipInfo, setTooltipInfo] = useState([]);
   const [groupSelected, setGroupSelected] = useState(0);
   const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
+  const [year, setYear] = useState(2016);
 
   useEffect(
     () => {
-      console.log({ groupSelected });
+      // console.log({ groupSelected });
     },
     [groupSelected]
   );
 
   useEffect(() => {
-    const getSheetValues = async () => {
-      const request = await fetch(
-        `https://sheets.googleapis.com/v4/spreadsheets/1VAcF0eJ06y_8T4o2gvIL4YcyQy8pxb1zYkgXF76Uu1s/values/A4:I54`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization:
-              "Bearer ya29.GltDB6YdX5eWXlSoDGIK8FIbbLz17Fv4SCWOAOsUmztZzJe9ZE2zagyqz6yXmrvy5yLFiJmqDjUDVrsQKx1Yl8Ve5iTIa4qC-5de9GkInAYcf1D_Mi9z2Hz8LR6X"
-          }
-        }
-      );
-      const data = await request.json();
-      // console.log(data);
+    async function fetchData() {
+      const data = await getData(2016);
       setTurnOutData(data.values);
-    };
+    }
 
-    if (turnOutData && turnOutData.length === 0) getSheetValues();
+    if (turnOutData && turnOutData.length === 0) fetchData();
   });
+
+  useEffect(
+    () => {
+      async function fetchData() {
+        const data = await getData(year);
+        setTurnOutData(data.values);
+      }
+      fetchData();
+    },
+    [year]
+  );
 
   const mouseOver = e => {
     let position = {
@@ -97,6 +102,7 @@ function App() {
     if (!groupSelected) {
       return `svg-map__location svg-map__location--heat${pct}`;
     } else {
+      console.log("idx: " + idx + " pct: " + pct);
       let highlight = pct === groupSelected ? pct : "down";
       return `svg-map__location svg-map__location--heat${highlight}`;
     }
@@ -105,6 +111,10 @@ function App() {
   const getAllInGroup = percentage => {
     // console.log({ percentage });
     setGroupSelected(percentage);
+  };
+
+  const onChange = e => {
+    setYear(parseInt(e));
   };
 
   return (
@@ -134,6 +144,20 @@ function App() {
             </p>
           </div>
         )}
+        <div className="title">USA Voters Turnout {year}</div>
+        <div className="radioButtons">
+          <RadioGroup onChange={e => onChange(e)} horizontal>
+            <RadioButton value="2016" checked={year === 2016}>
+              2016
+            </RadioButton>
+            <RadioButton value="2012" checked={year === 2012}>
+              2012
+            </RadioButton>
+            <RadioButton value="2008" checked={year === 2008}>
+              2008
+            </RadioButton>
+          </RadioGroup>
+        </div>
       </div>
       <Legend getAllInGroup={p => getAllInGroup(p)} />
     </div>

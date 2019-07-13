@@ -5,6 +5,18 @@ function Legend(props) {
   const { getAllInGroup } = props;
   return (
     <div className="legend">
+      <h4 className="legend-num">30%</h4>
+      <div
+        className="legend-rec c30"
+        onMouseOver={() => getAllInGroup(30)}
+        onMouseOut={() => getAllInGroup(0)}
+      />
+      <h4 className="legend-num">35%</h4>
+      <div
+        className="legend-rec c35"
+        onMouseOver={() => getAllInGroup(35)}
+        onMouseOut={() => getAllInGroup(0)}
+      />
       <h4 className="legend-num">40%</h4>
       <div
         className="legend-rec c40"

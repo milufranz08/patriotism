@@ -6,6 +6,7 @@
     "@svg-maps/usa": "^1.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-radio-buttons": "^1.2.2",
     "react-scripts": "3.0.1",
     "react-svg-map": "^2.0.0"
   },

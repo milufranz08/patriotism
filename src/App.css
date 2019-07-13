@@ -7,7 +7,18 @@
 }
 
 .map {
-  padding: 5em;
+  /* padding: 3em 3em 8em; */
+  /* height: 70vh; */
+  padding-top: 3em;
+  width: 90%;
+}
+
+.title {
+  color: white;
+  font-size: 3em;
+  margin-top: -90px;
+  text-align: right;
+  z-index: 2;
 }
 
 .svg-map {
@@ -39,40 +50,44 @@
 }
 
 /* colors depending on VEP Ballot counted */
-.svg-map__location--heat40 {
+.svg-map__location--heat30 {
   fill: #09f9f4;
 }
 
-.svg-map__location--heat45 {
+.svg-map__location--heat35 {
   fill: #13e4ea;
 }
 
-.svg-map__location--heat50 {
+.svg-map__location--heat40 {
   fill: #1dd0e1;
 }
 
-.svg-map__location--heat55 {
+.svg-map__location--heat45 {
   fill: #27bbd7;
 }
 
-.svg-map__location--heat60 {
+.svg-map__location--heat50 {
   fill: #31a6cd;
 }
 
-.svg-map__location--heat65 {
+.svg-map__location--heat55 {
   fill: #3b91c4;
 }
 
-.svg-map__location--heat70 {
+.svg-map__location--heat60 {
   fill: #457dba;
 }
 
-.svg-map__location--heat75 {
+.svg-map__location--heat65 {
   fill: #4e68b0;
 }
 
+.svg-map__location--heat70 {
+  fill: #5853a7;
+}
+
 .svg-map__location--heat75 {
-  fill: #4e68b0;
+  fill: #623e9d;
 }
 
 .svg-map__location--heatdown {
@@ -101,34 +116,47 @@
   justify-self: end;
 }
 
-.c40 {
+.c30 {
   background-color: #09f9f4;
 }
 
-.c45 {
+.c35 {
   background-color: #13e4ea;
 }
 
-.c50 {
+.c40 {
   background-color: #1dd0e1;
 }
 
-.c55 {
+.c45 {
   background-color: #27bbd7;
 }
 
-.c60 {
+.c50 {
   background-color: #31a6cd;
 }
 
-.c65 {
+.c55 {
   background-color: #3b91c4;
 }
 
-.c70 {
+.c60 {
   background-color: #457dba;
 }
 
-.c75 {
+.c65 {
   background-color: #4e68b0;
+}
+
+.c70 {
+  background-color: #5853a7;
+}
+
+.c75 {
+  background-color: #623e9d;
+}
+
+.radioButtons {
+  width: 600px;
+  float: right;
 }
