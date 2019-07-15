@@ -8,7 +8,7 @@ import "./App.css";
 //Components
 import Legend from "./components/Legend";
 //Api
-import { getData } from "./api/data";
+import { getData, getAgeDistData } from "./api/data";
 
 function App() {
   const [turnOutData, setTurnOutData] = useState([]);
@@ -16,10 +16,30 @@ function App() {
   const [groupSelected, setGroupSelected] = useState(0);
   const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
   const [year, setYear] = useState(2016);
+  const [ageGrouping, setAgeGrouping] = useState([]);
 
   useEffect(
     () => {
-      // console.log({ groupSelected });
+      async function fetchData() {
+        const data = await getAgeDistData();
+        // console.log("data.values", data.values);
+        if (turnOutData && groupSelected && data.values) {
+          let group = [];
+          turnOutData.forEach(item => {
+            let num = item[3] === "" ? item[4] : item[3];
+            let pct = round5(parseInt(num.replace(/%/g, ""), 10));
+            if (pct === groupSelected) {
+              data.values.forEach(d => {
+                if (d[0].toLowerCase() === item[0].toLowerCase()) group.push(d);
+              });
+            }
+          });
+
+          setAgeGrouping(group);
+        }
+      }
+
+      fetchData();
     },
     [groupSelected]
   );
@@ -63,6 +83,7 @@ function App() {
   const mouseOut = () => {
     setTooltipInfo([]);
     setCoordinates({ x: 0, y: 0 });
+    setAgeGrouping([]);
   };
 
   const hide = {
@@ -102,7 +123,6 @@ function App() {
     if (!groupSelected) {
       return `svg-map__location svg-map__location--heat${pct}`;
     } else {
-      console.log("idx: " + idx + " pct: " + pct);
       let highlight = pct === groupSelected ? pct : "down";
       return `svg-map__location svg-map__location--heat${highlight}`;
     }
@@ -116,6 +136,8 @@ function App() {
   const onChange = e => {
     setYear(parseInt(e));
   };
+
+  console.log({ ageGrouping });
 
   return (
     <div className="App">
