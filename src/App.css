@@ -90,6 +90,10 @@
   fill: #623e9d;
 }
 
+.svg-map__location--heat80 {
+  fill: #503381;
+}
+
 .svg-map__location--heatdown {
   fill: #d0d5d5 !important;
 }
@@ -154,6 +158,10 @@
 
 .c75 {
   background-color: #623e9d;
+}
+
+.c80 {
+  background-color: #503381;
 }
 
 .radioButtons {

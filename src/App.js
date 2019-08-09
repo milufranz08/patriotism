@@ -7,8 +7,6 @@ import "react-svg-map/lib/index.css";
 import "./App.css";
 //Components
 import Legend from "./components/Legend";
-//Api
-import { getData, getAgeDistData } from "./api/data";
 
 function App() {
   const [turnOutData, setTurnOutData] = useState([]);
@@ -16,53 +14,42 @@ function App() {
   const [groupSelected, setGroupSelected] = useState(0);
   const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
   const [year, setYear] = useState(2016);
-  const [ageGrouping, setAgeGrouping] = useState([]);
-
-  useEffect(
-    () => {
-      async function fetchData() {
-        const data = await getAgeDistData();
-        // console.log("data.values", data.values);
-        if (turnOutData && groupSelected && data.values) {
-          let group = [];
-          turnOutData.forEach(item => {
-            let num = item[3] === "" ? item[4] : item[3];
-            let pct = round5(parseInt(num.replace(/%/g, ""), 10));
-            if (pct === groupSelected) {
-              data.values.forEach(d => {
-                if (d[0].toLowerCase() === item[0].toLowerCase()) group.push(d);
-              });
-            }
-          });
-
-          setAgeGrouping(group);
-        }
-      }
-
-      fetchData();
-    },
-    [groupSelected]
+  const SteinStore = require("stein-js-client");
+  const store = new SteinStore(
+    "https://api.steinhq.com/v1/storages/5d4d8f23bb4eaf04c5eaa190"
   );
 
   useEffect(() => {
-    async function fetchData() {
-      const data = await getData(2016);
-      setTurnOutData(data.values);
-    }
-
     if (turnOutData && turnOutData.length === 0) fetchData();
   });
 
-  useEffect(
-    () => {
-      async function fetchData() {
-        const data = await getData(year);
-        setTurnOutData(data.values);
-      }
-      fetchData();
+  useEffect(() => {
+      fetchData(year);
     },
     [year]
   );
+
+  const fetchData = (year) => {
+    let sheetNum = "Sheet"
+    switch (year) {
+      case 2016:
+        sheetNum += 1;
+        break;
+      case 2012:
+          sheetNum += 2;
+          break;
+      case 2008:
+          sheetNum += 3;
+          break;
+      default: 
+        sheetNum += 1;
+        break;
+    }
+    
+    store.read(sheetNum, { limit: 51, offset: 1 }).then(data => {
+      setTurnOutData(data);
+    })
+  }
 
   const mouseOver = e => {
     let position = {
@@ -70,10 +57,9 @@ function App() {
       y: e.clientX - 100
     };
     let name = e.target.getAttribute("name");
-    // setTooltipLabel(name);
     if (turnOutData) {
       turnOutData.forEach(item => {
-        if (item[0].toLowerCase() === name.toLowerCase()) setTooltipInfo(item);
+        if (item.state.toLowerCase() === name.toLowerCase()) setTooltipInfo(item);
       });
     }
 
@@ -83,7 +69,6 @@ function App() {
   const mouseOut = () => {
     setTooltipInfo([]);
     setCoordinates({ x: 0, y: 0 });
-    setAgeGrouping([]);
   };
 
   const hide = {
@@ -106,19 +91,19 @@ function App() {
     if (
       turnOutData &&
       turnOutData[index] &&
-      turnOutData[index][0].toLowerCase() === location.name.toLowerCase()
+      turnOutData[index].state.toLowerCase() === location.name.toLowerCase()
     ) {
       idx = index;
     } else if (turnOutData) {
       idx = turnOutData.findIndex(data => {
-        return data[0].toLowerCase() === location.name.toLowerCase();
+        return data.state.toLowerCase() === location.name.toLowerCase();
       });
     }
 
     if ((idx || idx === 0) && turnOutData[idx]) {
       let num =
-        turnOutData[idx][3] === "" ? turnOutData[idx][4] : turnOutData[idx][3];
-      pct = round5(parseInt(num.replace(/%/g, ""), 10));
+        !turnOutData[idx]['VEP Total Ballots Counted'] ? turnOutData[idx]['VEP Highest Office'] : turnOutData[idx]['VEP Total Ballots Counted'];
+      if (num) pct = round5(parseInt(num.replace(/%/g, ""), 10));
     }
     if (!groupSelected) {
       return `svg-map__location svg-map__location--heat${pct}`;
@@ -128,16 +113,9 @@ function App() {
     }
   };
 
-  const getAllInGroup = percentage => {
-    // console.log({ percentage });
-    setGroupSelected(percentage);
-  };
+  const getAllInGroup = percentage => setGroupSelected(percentage);
 
-  const onChange = e => {
-    setYear(parseInt(e));
-  };
-
-  console.log({ ageGrouping });
+  const onChange = e => setYear(parseInt(e));
 
   return (
     <div className="App">
@@ -155,14 +133,14 @@ function App() {
             className="map__tooltip"
             style={coordinates.x !== 0 ? show : hide}
           >
-            <h3>{tooltipInfo[0]}</h3>
+            <h3>{tooltipInfo.state}</h3>
             <p>
               <strong>VEP turnout: </strong>
-              {tooltipInfo[3] === "" ? tooltipInfo[4] : tooltipInfo[3]}
+              {tooltipInfo['VEP Total Ballots Counted'] === "" ? tooltipInfo['VEP Highest Office'] : tooltipInfo['VEP Total Ballots Counted']}
             </p>
             <p>
               <strong>VEP: </strong>
-              {tooltipInfo[8]}
+              {tooltipInfo['Voting-Eligible Population (VEP)']}
             </p>
           </div>
         )}

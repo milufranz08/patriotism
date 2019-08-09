@@ -66,6 +66,12 @@ function Legend(props) {
         onMouseOver={() => getAllInGroup(75)}
         onMouseOut={() => getAllInGroup(0)}
       />
+      <h4 className="legend-num">80%</h4>
+      <div
+        className="legend-rec c80"
+        onMouseOver={() => getAllInGroup(80)}
+        onMouseOut={() => getAllInGroup(0)}
+      />
     </div>
   );
 }
