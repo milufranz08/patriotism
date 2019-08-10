@@ -3,14 +3,15 @@
   display: grid;
   grid-template-columns: 80% 20%;
   text-align: center;
-  height: 100vh;
+  /* height: 80vh; */
 }
 
 .map {
   /* padding: 3em 3em 8em; */
   /* height: 70vh; */
   padding-top: 3em;
-  width: 90%;
+  width: 100%;
+  padding-bottom: 2em;
 }
 
 .title {
@@ -116,7 +117,7 @@
 .legend-rec {
   cursor: pointer;
   height: 100%;
-  width: 30px;
+  width: 50px;
   justify-self: end;
 }
 
@@ -167,4 +168,8 @@
 .radioButtons {
   width: 600px;
   float: right;
+}
+
+.radioButton {
+  border-radius: 15px;
 }
