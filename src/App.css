@@ -3,12 +3,10 @@
   display: grid;
   grid-template-columns: 80% 20%;
   text-align: center;
-  /* height: 80vh; */
+  height: 100vh;
 }
 
 .map {
-  /* padding: 3em 3em 8em; */
-  /* height: 70vh; */
   padding-top: 3em;
   width: 100%;
   padding-bottom: 2em;
@@ -17,9 +15,61 @@
 .title {
   color: white;
   font-size: 3em;
-  margin-top: -90px;
   text-align: right;
   z-index: 2;
+}
+
+.radioButtons {
+  float: right;
+}
+
+/* Mobile Styles */
+@media only screen and (max-width: 400px) {
+  .title {
+    line-height: 1em;
+    padding: 0.5em 1em 0.3em 0;
+    /* width: 200px; */
+  }
+
+  .radioButtons {
+    padding-right: 2.8em;
+    width: 200px;
+  }
+
+  .legend-rec {
+    width: 30px;
+  }
+}
+
+/* Tablet Styles */
+@media only screen and (min-width: 401px) and (max-width: 960px) {
+  .title {
+    padding: 0.5em 1em 0.3em 0;
+  }
+
+  .radioButtons {
+    padding-right: 2.8em;
+    width: 200px;
+  }
+
+  .legend-rec {
+    width: 30px;
+  }
+}
+
+/* Desktop Styles */
+@media only screen and (min-width: 961px) {
+  .title {
+    margin-top: -90px;
+  }
+  
+  .radioButtons {
+    width: 600px;
+  }
+
+  .legend-rec {
+    width: 50px;
+  }
 }
 
 .svg-map {
@@ -117,7 +167,6 @@
 .legend-rec {
   cursor: pointer;
   height: 100%;
-  width: 50px;
   justify-self: end;
 }
 
@@ -163,13 +212,4 @@
 
 .c80 {
   background-color: #503381;
-}
-
-.radioButtons {
-  width: 600px;
-  float: right;
-}
-
-.radioButton {
-  border-radius: 15px;
 }

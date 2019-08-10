@@ -14,10 +14,16 @@ function App() {
   const [groupSelected, setGroupSelected] = useState(0);
   const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
   const [year, setYear] = useState(2016);
+  const [inPhone, setInPhone] = useState();
   const SteinStore = require("stein-js-client");
   const store = new SteinStore(
     "https://api.steinhq.com/v1/storages/5d4d8f23bb4eaf04c5eaa190"
   );
+
+  useEffect(() => {
+    if (window.innerWidth > 960) setInPhone(true)
+    else setInPhone(false)
+  })
 
   useEffect(() => {
     if (turnOutData && turnOutData.length === 0) fetchData();
@@ -146,7 +152,7 @@ function App() {
         )}
         <div className="title">USA Voters Turnout {year}</div>
         <div className="radioButtons">
-          <RadioGroup onChange={e => onChange(e)} horizontal>
+          <RadioGroup onChange={e => onChange(e)} horizontal={inPhone}>
             <RadioButton value="2016" checked={year === 2016}>
               2016
             </RadioButton>
