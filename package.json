@@ -7,7 +7,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-radio-buttons": "^1.2.2",
-    "react-scripts": "3.0.1",
+    "react-scripts": "5.0.1",
     "react-svg-donut-chart": "^1.1.0",
     "react-svg-map": "^2.0.0",
     "stein-js-client": "0.0.2"
